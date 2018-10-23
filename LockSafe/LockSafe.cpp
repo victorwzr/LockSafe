@@ -4,11 +4,26 @@
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
+#include "random.h"
+#include "time.h"
+#include "Lock.h"
+
+
+
 
 using namespace std;
 
+bool cusafe = false;
+
 int main()
 {
+	srand((int)time(0));                    //random seed
+	Lock *l = new Lock();                       
+	while (cusafe == false) {
+		l->runLock();                                //progrom enter
+		cusafe = l->reSafe();
+	}
+
 	ofstream OUT;
 	OUT.open("key.txt");
 	OUT.close();
