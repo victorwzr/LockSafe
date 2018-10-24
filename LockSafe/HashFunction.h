@@ -11,6 +11,10 @@ public:
 	void setBaseRoot(vector <int>&allrootB);
 	int getHshing();
 	void setKey();
+	int* outputKeyCN();
+	int* outputKeyLN();
+	int* outputKeyHN();
+	int outputRoot();
 	
 private:
 	int temRoot;

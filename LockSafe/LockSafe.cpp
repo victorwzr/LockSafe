@@ -2,8 +2,6 @@
 //Zhaoran Wang 150382450 Final Version
 
 #include "stdafx.h"
-#include <iostream>
-#include <fstream>
 #include "random.h"
 #include "time.h"
 #include "Lock.h"
@@ -23,14 +21,9 @@ int main()
 		l->runLock();                                //progrom enter
 		cusafe = l->reSafe();
 	}
-
-	ofstream OUT;
-	OUT.open("key.txt");
-	OUT.close();
-	OUT.open("multisafe.txt");
-	OUT.close();
-	OUT.open("locksafe.txt");
-	OUT.close();
+	l->OutputLockKey();             //Output
+	l->OutputLockSafe();
+	l->OutputLockFalse();
 
 	return 0;
 }

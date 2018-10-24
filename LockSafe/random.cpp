@@ -21,7 +21,7 @@ int random::getRoot()
 	return root;
 }
 
-vector<int> allroot;
+
 
 void random::chooseRoot(vector<int>&allrootC)
 {

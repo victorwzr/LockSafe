@@ -112,7 +112,7 @@ void HashFunction::setHashRoot(int caseChar)
 	}
 }
 
-vector<int> allroot;
+
 
 void HashFunction::setBaseRoot(vector<int>&allrootB)
 {
@@ -131,28 +131,36 @@ void HashFunction::setKey()
 	r->setHashKey();
 	CNkeyP = r->getHashKey();
 	for (int i = 0; i < 4; i++) {
-		//CNkey[i] = CNkeyP[i];
-		CNkey[0] = 4;
-		CNkey[1] = 9;
-		CNkey[2] = 9;
-		CNkey[3] = 9;
+		CNkey[i] = CNkeyP[i];
 	}
 	r->setHashKey();
 	LNkeyP = r->getHashKey();
 	for (int i = 0; i < 4; i++) {
-		//LNkey[i] = LNkeyP[i];
-		LNkey[0] = 0;
-		LNkey[1] = 0;
-		LNkey[2] = 0;
-		LNkey[3] = 0;
+		LNkey[i] = LNkeyP[i];
 	}
 	r->setHashKey();
 	HNkeyP = r->getHashKey();
 	for (int i = 0; i < 4; i++) {
-		//HNkey[i] = HNkeyP[i];
-		HNkey[0] = 0;
-		HNkey[1] = 0;
-		HNkey[2] = 0;
-		HNkey[3] = 0;
+		HNkey[i] = HNkeyP[i];
 	}
+}
+
+int * HashFunction::outputKeyCN()
+{
+	return CNkey;
+}
+
+int * HashFunction::outputKeyLN()
+{
+	return LNkey;
+}
+
+int * HashFunction::outputKeyHN()
+{
+	return HNkey;
+}
+
+int HashFunction::outputRoot()
+{
+	return temRoot;
 }
