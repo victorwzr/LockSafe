@@ -9,7 +9,7 @@ public:
 	bool CheckEvenResult();
 	void CheckEven(int LN[5]);
 	bool CheckSumResult();
-	void CheckSum(int LN[5]);
+	//void CheckSum(int LN[5]);
 private:
 	bool safe;
 	int d1, d2, d3, d4, sum;

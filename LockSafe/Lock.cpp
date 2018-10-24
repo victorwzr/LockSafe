@@ -50,8 +50,10 @@ void Lock::OutputLockSafe()
 {
 	allLNBackup.assign(allLN.begin(), allLN.end());
 	myfile.open("multi-safe.txt");
-	myfile << "NS " << resultRoot.size() << endl;
-	for (int i = 0; i < 100; i++) {
+	myfile.unsetf(ios::showpos);
+	rootsize = resultRoot.size();
+	myfile << "NS " << rootsize << endl;
+	for (int i = 0; i < rootsize; i++) {
 		for (int j = 0; j < 5; j++) {
 			myfile << "CN" << j << " " << allCN.front() << ", ";
 			allCN.erase(allCN.begin());
@@ -82,7 +84,7 @@ void Lock::OutputLockFalse()
 }
 
 
-void Lock::runLock()
+void Lock::runLock(int rootNumber)
 {
 	if (first == true) {
 		allroot.reserve(10000);
@@ -115,12 +117,18 @@ void Lock::runLock()
 	for (int i = 0; i < 5; i++) {
 		if (i == 0) {
 			if (allroot.size() == 0) {
-				//cout << "more than 10000" << endl;
+				allroot.clear();
+				resultRoot.clear();
+				allCN.clear();
+				allLN.clear();
+				allHN.clear();
+				incounter = 0;
 				first = true;
 				break;
 			}
 			hf->setBaseRoot(allroot);	
 			resultRoot.push_back(hf->outputRoot());
+			//cout << hf->outputRoot() << endl;
 		}
 		else {
 			hf->setHashRoot(1);
@@ -153,13 +161,27 @@ void Lock::runLock()
 		allHN.push_back(temp);
 		//cout << "HN" << i << " is: " << temp << endl;
 		if (i == 4) {
-			
+			temsize = allCN.size();
+			CNKeyMuSafe[4] = allCN.at(temsize - 1);
+			CNKeyMuSafe[3] = allCN.at(temsize - 2);
+			CNKeyMuSafe[2] = allCN.at(temsize - 3);
+			CNKeyMuSafe[1] = allCN.at(temsize - 4);
+			CNKeyMuSafe[0] = allCN.at(temsize - 5);
+			s->CheckEven(CNKeyMuSafe);
+			tempsafe = s->CheckEvenResult();
+			if (tempsafe == false) {
+				resultRoot.pop_back();
+				for (int k = 0; k < 5; k++) {
+					allCN.pop_back();
+					allLN.pop_back();
+					allHN.pop_back();
+				}
+				break;
+			}
+			//cout << tempsafe << endl;
 			incounter++;
-			if (incounter < 100) {
+			if (incounter < rootNumber)
 				tempsafe = false;
-			}
-			else {
-			}
 		}
 	}
 

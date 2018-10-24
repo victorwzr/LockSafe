@@ -43,13 +43,20 @@ void Safe::CheckEven(int LN[5])
 		d2 = (LN[i] - d1 * 1000) / 100;
 		d3 = (LN[i] - d1 * 1000 - d2 * 100) / 10;
 		d4 = LN[i] - d1 * 1000 - d2 * 100 - d3 * 10;
+		sumS[i] = d1 + d2 + d3 + d4;
 		sum = sum + d1 + d2 + d3 + d4;
 	}
-	if (sum % 2) {
-		safe = false;
+	if ((sum % 2) == 0) {
+		if ((sumS[0] < sumS[1]) && (sumS[1] < sumS[2]) && (sumS[2] < sumS[3]) && (sumS[3] < sumS[4])) {
+			safe = true;
+		}
+		else
+		{
+			safe = false;
+		}
 	}
 	else {
-		safe = true;
+		safe = false;
 	}
 }
 
@@ -58,7 +65,7 @@ bool Safe::CheckSumResult()
 	return safe;
 }
 
-void Safe::CheckSum(int LN[5])
+/*void Safe::CheckSum(int LN[5])
 {
 	for (int i = 0; i < 5; i++) {
 		d1 = LN[i] / 1000;
@@ -73,4 +80,4 @@ void Safe::CheckSum(int LN[5])
 	else {
 		safe = false;
 	}
-}
+}*/
