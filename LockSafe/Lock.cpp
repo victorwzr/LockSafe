@@ -166,7 +166,7 @@ void Lock::runLock(int rootNumber)
 			CNKeyMuSafe[3] = allCN.at(temsize - 2);
 			CNKeyMuSafe[2] = allCN.at(temsize - 3);
 			CNKeyMuSafe[1] = allCN.at(temsize - 4);
-			CNKeyMuSafe[0] = allCN.at(temsize - 5);
+			CNKeyMuSafe[0] = allCN.at(temsize - 5); 
 			s->CheckEven(CNKeyMuSafe);
 			tempsafe = s->CheckEvenResult();
 			if (tempsafe == false) {
@@ -178,7 +178,6 @@ void Lock::runLock(int rootNumber)
 				}
 				break;
 			}
-			//cout << tempsafe << endl;
 			incounter++;
 			if (incounter < rootNumber)
 				tempsafe = false;

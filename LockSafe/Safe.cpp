@@ -38,6 +38,7 @@ bool Safe::CheckEvenResult()
 
 void Safe::CheckEven(int LN[5])
 {
+	sum = 0;
 	for (int i = 0; i < 5; i++) {
 		d1 = LN[i] / 1000;
 		d2 = (LN[i] - d1 * 1000) / 100;
@@ -45,6 +46,7 @@ void Safe::CheckEven(int LN[5])
 		d4 = LN[i] - d1 * 1000 - d2 * 100 - d3 * 10;
 		sumS[i] = d1 + d2 + d3 + d4;
 		sum = sum + d1 + d2 + d3 + d4;
+	
 	}
 	if ((sum % 2) == 0) {
 		if ((sumS[0] < sumS[1]) && (sumS[1] < sumS[2]) && (sumS[2] < sumS[3]) && (sumS[3] < sumS[4])) {
