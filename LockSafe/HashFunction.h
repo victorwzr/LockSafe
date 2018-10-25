@@ -15,12 +15,14 @@ public:
 	int* outputKeyLN();
 	int* outputKeyHN();
 	int outputRoot();
-	
-private:
+	int CNkey[4], LNkey[4], HNkey[4];
 	int temRoot;
+
+private:
+	
 	int rootA, rootB, rootC, rootD;
 	int* CNkeyP,* LNkeyP,* HNkeyP;
-	int CNkey[4], LNkey[4], HNkey[4];
+	
 	int CN, LN, HN, reNum;
 };
 

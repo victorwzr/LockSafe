@@ -17,6 +17,7 @@ HashFunction::~HashFunction()
 
 void HashFunction::setHashing(int caseNum)
 {
+	//cout << temRoot << endl;
 	rootA = temRoot / 1000;
 	rootB = (temRoot - rootA * 1000) / 100;
 	rootC = (temRoot - rootA * 1000 - rootB * 100) / 10;
@@ -44,6 +45,7 @@ void HashFunction::setHashing(int caseNum)
 		if (rootD >= 10)
 			rootD = rootD - 10;
 		CN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
+		//cout << CN << endl;
 		reNum = CN;
 		break;
 	case 2:
@@ -68,6 +70,7 @@ void HashFunction::setHashing(int caseNum)
 		if (rootD >= 10)
 			rootD = rootD - 10;
 		LN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
+		//cout << LN << endl;
 		reNum = LN;
 		break;
 	case 3:
@@ -92,6 +95,7 @@ void HashFunction::setHashing(int caseNum)
 		if (rootD >= 10)
 			rootD = rootD - 10;
 		HN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
+		//cout << HN << endl;
 		reNum = HN;
 		break;
 	}

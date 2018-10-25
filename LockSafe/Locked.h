@@ -26,6 +26,7 @@ public:
 	void setLHF();
 	int reLHF();
 	int reUHF();
+	void reBuiltLock();
 
 
 
@@ -33,6 +34,7 @@ private:
 
 	string line;
 	string culine;
+	string safe;
 	vector<string> vec;
 	vector<int> LN0;
 	vector<int> LN1;
@@ -46,16 +48,20 @@ private:
 	vector<int*> HN0, HN1, HN2, HN3, HN4;
 	vector<int*> validUHF;
 	vector<int*> CN0, CN1, CN2, CN3, CN4;
+	vector<int> OutCN;
+	vector<int> OutLN;
+	vector<int> OutHN;
 	int UHF[10000][4];
 	int ULHF[4];
+	int CNKeyMuSafe[4];
 	int vVUHF[4];
 	int PHF[4];
 	int LHF[4];
 	int hash[4];
 	int *vUHF;
-	int temp, sumboumns, passsum, totalsum, finalUHFv, finalPHFv, finalLHFv;
+	int temp, sumboumns, passsum, totalsum, finalUHFv, finalPHFv, finalLHFv, reTsize, tempHash, temsize;
 	int *HN0temp, *HN1temp, *HN2temp, *HN3temp, *HN4temp, *safetemp;
-	bool safeCN;
+	bool safeCN, mutilSafe, hashsafe;
 	bool RCHK;
 	int chkcounter = 0, chkcounter2 = 0;   //for chk
 };

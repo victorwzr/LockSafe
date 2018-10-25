@@ -11,12 +11,7 @@
 #include <vector>
 
 using namespace std;
-vector<int> allroot;
-vector<int> resultRoot;
-vector<int> allCN;
-vector<int> allLN;
-vector<int> allLNBackup;
-vector<int> allHN;
+
 HashFunction *hf = new HashFunction();
 Safe *s = new Safe();
 ofstream myfile;
@@ -39,17 +34,17 @@ void Lock::OutputLockKey()
 		myfile.unsetf(ios::showpos);
 		myfile << "ROOT " << (*iter) << endl;
 		myfile.setf(ios::showpos);
-		myfile << "UHF " << CNKey[0] << "," << CNKey[1] << "," << CNKey[2] << "," << CNKey[3] << endl;
-		myfile << "LHF " << LNKey[0] << "," << LNKey[1] << "," << LNKey[2] << "," << LNKey[3] << endl;
-		myfile << "PHF " << HNKey[0] << "," << HNKey[1] << "," << HNKey[2] << "," << HNKey[3] << endl;
+		myfile << "UHF " << CNKey[0] << ", " << CNKey[1] << ", " << CNKey[2] << ", " << CNKey[3] << endl;
+		myfile << "LHF " << LNKey[0] << ", " << LNKey[1] << ", " << LNKey[2] << ", " << LNKey[3] << endl;
+		myfile << "PHF " << HNKey[0] << ", " << HNKey[1] << ", " << HNKey[2] << ", " << HNKey[3] << endl;
 	}
 	myfile.close();
 }
 
-void Lock::OutputLockSafe()
+void Lock::OutputLockSafe(char *name)
 {
 	allLNBackup.assign(allLN.begin(), allLN.end());
-	myfile.open("multi-safe.txt");
+	myfile.open(name);
 	myfile.unsetf(ios::showpos);
 	rootsize = resultRoot.size();
 	myfile << "NS " << rootsize << endl;
@@ -96,25 +91,10 @@ void Lock::runLock(int rootNumber)
 		CNKey = hf->outputKeyCN();
 		LNKey = hf->outputKeyLN();
 		HNKey = hf->outputKeyHN();
-		/*cout << "UHF: ";
-		for (int i = 0; i < 4; i++) {
-			cout << CNKey[i];
-		}
-		cout << endl;
-		cout << "LHF: ";
-		for (int i = 0; i < 4; i++) {
-			cout << LNKey[i];
-		}
-		cout << endl;
-		cout << "PHF: ";
-		for (int i = 0; i < 4; i++) {
-			cout  << HNKey[i];
-		}
-		cout << endl; */
 		first = false;
 	}
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++) {                      //main hash part
 		if (i == 0) {
 			if (allroot.size() == 0) {
 				allroot.clear();

@@ -6,11 +6,15 @@
 #include "HashFunctioned.h"
 #include "safeed.h"
 #include<fstream>
+#include "HashFunction.h"
+#include "Safe.h"
 #include<algorithm>
 
 HashFunctioned *hfun = new HashFunctioned();
 safeed *sf = new safeed();
-
+HashFunction *hreB = new HashFunction();
+Safe *sb = new Safe();
+ofstream breaked;
 
 Locked::Locked()
 {
@@ -130,7 +134,7 @@ void Locked::setLock()
 		lock[i].E[2] = LN4[i] / 10 - lock[i].E[0] * 100 - lock[i].E[1] * 10;
 		lock[i].E[3] = LN4[i] - lock[i].E[0] * 1000 - lock[i].E[1] * 100 - lock[i].E[2] * 10;
 	}
-	Root.clear();               //release the vector
+	               //release the vector
 	LN0.clear();
 	LN1.clear();
 	LN2.clear();
@@ -382,4 +386,101 @@ int Locked::reUHF()
 
 	finalUHFv = (vVUHF[0] * 1000) + (vVUHF[1] * 100) + (vVUHF[2] * 10) + (vVUHF[3]);
 	return finalUHFv;
+}
+
+void Locked::reBuiltLock()
+{
+	reTsize = Root.size();
+	//cout << reTsize << endl;
+	hreB->CNkey[0] = vVUHF[0];
+	hreB->CNkey[1] = vVUHF[1];
+	hreB->CNkey[2] = vVUHF[2];
+	hreB->CNkey[3] = vVUHF[3];
+	hreB->LNkey[0] = LHF[0];
+	hreB->LNkey[1] = LHF[1];
+	hreB->LNkey[2] = LHF[2];
+	hreB->LNkey[3] = LHF[3];
+	hreB->HNkey[0] = PHF[0];
+	hreB->HNkey[1] = PHF[1];
+	hreB->HNkey[2] = PHF[2];
+	hreB->HNkey[3] = PHF[3];
+	for (unsigned int i = 0; i < Root.size(); i++) {
+		for (int j = 0; j < 5; j++) {
+			if (j == 0) {
+				hreB->temRoot = Root.at(i);
+			}
+			else {
+				hreB->setHashRoot(1);
+			}
+			hreB->setHashing(1);
+			tempHash = hreB->getHshing();
+			OutCN.push_back(tempHash);
+			//cout << "CN" << tempHash << endl;
+			sb->CheckCN(tempHash);
+			hashsafe = sb->CheckCNResult();
+			if (hashsafe == false) {
+				mutilSafe = false;
+			}
+			hreB->setHashRoot(2);
+			hreB->setHashing(2);
+			tempHash = hreB->getHshing();
+			OutLN.push_back(tempHash);
+			//cout << "LN" << tempHash << endl;
+			hreB->setHashRoot(3);
+			hreB->setHashing(3);
+			tempHash = hreB->getHshing();
+			OutHN.push_back(tempHash);
+			//cout << "HN" << tempHash << endl;
+			if (i == 4) {
+				temsize = OutCN.size();
+				CNKeyMuSafe[4] = OutCN.at(temsize - 1);
+				CNKeyMuSafe[3] = OutCN.at(temsize - 2);
+				CNKeyMuSafe[2] = OutCN.at(temsize - 3);
+				CNKeyMuSafe[1] = OutCN.at(temsize - 4);
+				CNKeyMuSafe[0] = OutCN.at(temsize - 5);
+				sb->CheckEven(CNKeyMuSafe);
+				hashsafe = sb->CheckEvenResult();
+				if (hashsafe == false) {
+					mutilSafe = false;
+				}
+			}
+		}
+	}
+
+	breaked.open("mutilsafeNEW.txt");
+	breaked.unsetf(ios::showpos);
+	if (mutilSafe = true) {
+		safe = "VALID";
+	}
+	else {
+		safe = "NOT VALID";
+	}
+
+	for (int i = 0; i < reTsize; i++) {
+		breaked << "NS " << i + 1 << " " << safe << endl;
+		for (int j = 0; j < 5; j++) {
+
+			breaked << "CN" << j << " " << OutCN.front() << ", ";
+			OutCN.erase(OutCN.begin());
+			breaked << "LN" << j << " " << OutLN.front() << ", ";
+			OutLN.erase(OutLN.begin());
+			breaked << "HN" << j << " " << OutHN.front() << endl;
+			OutHN.erase(OutHN.begin());
+		}
+		breaked << endl;
+	}
+	breaked.close();
+
+	breaked.open("keyNEW.txt");
+	breaked << "*** HashFunction will be same whether + ot - with origin file, eg +7 is same as -3***" << endl;
+	breaked << "NS " << reTsize << endl;
+	for (auto iter = Root.cbegin(); iter != Root.cend(); iter++) {
+		breaked.unsetf(ios::showpos);
+		breaked << "ROOT " << (*iter) << endl;
+		breaked.setf(ios::showpos);
+		breaked << "UHF " << vUHF[0] << ", " << vUHF[1] << ", " << vUHF[2] << ", " << vUHF[3] << endl;
+		breaked << "LHF " << LHF[0] << ", " << LHF[1] << ", " << LHF[2] << ", " << LHF[3] << endl;
+		breaked << "PHF " << PHF[0] << ", " << PHF[1] << ", " << PHF[2] << ", " << PHF[3] << endl;
+	}
+	breaked.close();
 }

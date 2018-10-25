@@ -145,6 +145,7 @@
     <ClInclude Include="Lock.h" />
     <ClInclude Include="Locked.h" />
     <ClInclude Include="random.h" />
+    <ClInclude Include="reGenerate.h" />
     <ClInclude Include="Safe.h" />
     <ClInclude Include="safeed.h" />
     <ClInclude Include="stdafx.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Locked.cpp" />
     <ClCompile Include="LockSafe.cpp" />
     <ClCompile Include="random.cpp" />
+    <ClCompile Include="reGenerate.cpp" />
     <ClCompile Include="Safe.cpp" />
     <ClCompile Include="safeed.cpp" />
     <ClCompile Include="stdafx.cpp">
