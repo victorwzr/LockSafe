@@ -1,8 +1,10 @@
+//Zhaoran Wang 150382450 main hash function
 #include "stdafx.h"
 #include "HashFunction.h"
 #include "random.h"
 #include "windows.h"
 #include <iostream>
+
 
 random *r = new random();
 
@@ -15,15 +17,14 @@ HashFunction::~HashFunction()
 {
 }
 
-void HashFunction::setHashing(int caseNum)
+void HashFunction::setHashing(int caseNum)                    //hashing by one same hashing method
 {
-	//cout << temRoot << endl;
 	rootA = temRoot / 1000;
 	rootB = (temRoot - rootA * 1000) / 100;
 	rootC = (temRoot - rootA * 1000 - rootB * 100) / 10;
 	rootD = temRoot - rootA * 1000 - rootB * 100 - rootC * 10;
-	switch (caseNum) {
-	case 1:
+	switch (caseNum) {                              //hashing by different hash function
+	case 1:               //CN
 		rootA = rootA + CNkey[0];
 		if (rootA < 0)
 			rootA = rootA + 10;
@@ -45,10 +46,9 @@ void HashFunction::setHashing(int caseNum)
 		if (rootD >= 10)
 			rootD = rootD - 10;
 		CN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
-		//cout << CN << endl;
 		reNum = CN;
 		break;
-	case 2:
+	case 2:                           //LN
 		rootA = rootA + LNkey[0];
 		if (rootA < 0)
 			rootA = rootA + 10;
@@ -70,10 +70,9 @@ void HashFunction::setHashing(int caseNum)
 		if (rootD >= 10)
 			rootD = rootD - 10;
 		LN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
-		//cout << LN << endl;
 		reNum = LN;
 		break;
-	case 3:
+	case 3:                  //HN
 		rootA = rootA + HNkey[0];
 		if (rootA < 0)
 			rootA = rootA + 10;
@@ -95,13 +94,12 @@ void HashFunction::setHashing(int caseNum)
 		if (rootD >= 10)
 			rootD = rootD - 10;
 		HN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
-		//cout << HN << endl;
 		reNum = HN;
 		break;
 	}
 }
 
-void HashFunction::setHashRoot(int caseChar)
+void HashFunction::setHashRoot(int caseChar)                 //set current hash value
 {
 	switch (caseChar) {
 	case 1:
@@ -118,19 +116,19 @@ void HashFunction::setHashRoot(int caseChar)
 
 
 
-void HashFunction::setBaseRoot(vector<int>&allrootB)
+void HashFunction::setBaseRoot(vector<int>&allrootB)                    //set base root for first key files
 {
 	r->chooseRoot(allrootB);
 	temRoot = r->getRoot();
 
 }
 
-int HashFunction::getHshing()
+int HashFunction::getHshing()                       //ggetter
 {
 	return reNum;
 }
 
-void HashFunction::setKey()
+void HashFunction::setKey()                 //set random hash key(hashing function)
 {
 	r->setHashKey();
 	CNkeyP = r->getHashKey();

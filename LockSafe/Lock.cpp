@@ -1,5 +1,5 @@
 //program flow here
-
+//Zhaoran Wang 150382450 main program flow for inital run
 #include "stdafx.h"
 #include "Lock.h"
 #include "safe.h"
@@ -26,7 +26,7 @@ Lock::~Lock()
 {
 }
 
-void Lock::OutputLockKey()
+void Lock::OutputLockKey()                  //out put key files
 {
 	myfile.open("key.txt");
 	myfile << "NS " << resultRoot.size() << endl;
@@ -41,7 +41,7 @@ void Lock::OutputLockKey()
 	myfile.close();
 }
 
-void Lock::OutputLockSafe(char *name)
+void Lock::OutputLockSafe(char *name)                  //out put mutlisafe file
 {
 	allLNBackup.assign(allLN.begin(), allLN.end());
 	myfile.open(name);
@@ -62,7 +62,7 @@ void Lock::OutputLockSafe(char *name)
 	myfile.close();
 }
 
-void Lock::OutputLockFalse()
+void Lock::OutputLockFalse()               //out put lock safe file
 {
 	myfile.open("locked-safe.txt");
 	myfile << "NL " << resultRoot.size() << endl;
@@ -79,8 +79,9 @@ void Lock::OutputLockFalse()
 }
 
 
-void Lock::runLock(int rootNumber)
+void Lock::runLock(int rootNumber, bool mutilsafeIN)
 {
+	mutilsafe = mutilsafeIN;
 	if (first == true) {
 		allroot.reserve(10000);
 		for (int i = 0; i < 10000; i++) {
@@ -141,23 +142,26 @@ void Lock::runLock(int rootNumber)
 		allHN.push_back(temp);
 		//cout << "HN" << i << " is: " << temp << endl;
 		if (i == 4) {
-			temsize = allCN.size();
-			CNKeyMuSafe[4] = allCN.at(temsize - 1);
-			CNKeyMuSafe[3] = allCN.at(temsize - 2);
-			CNKeyMuSafe[2] = allCN.at(temsize - 3);
-			CNKeyMuSafe[1] = allCN.at(temsize - 4);
-			CNKeyMuSafe[0] = allCN.at(temsize - 5); 
-			s->CheckEven(CNKeyMuSafe);
-			tempsafe = s->CheckEvenResult();
-			if (tempsafe == false) {
-				resultRoot.pop_back();
-				for (int k = 0; k < 5; k++) {
-					allCN.pop_back();
-					allLN.pop_back();
-					allHN.pop_back();
+			if (mutilsafe == true) {
+				temsize = allCN.size();
+				CNKeyMuSafe[4] = allCN.at(temsize - 1);
+				CNKeyMuSafe[3] = allCN.at(temsize - 2);
+				CNKeyMuSafe[2] = allCN.at(temsize - 3);
+				CNKeyMuSafe[1] = allCN.at(temsize - 4);
+				CNKeyMuSafe[0] = allCN.at(temsize - 5);
+				s->CheckEven(CNKeyMuSafe);
+				tempsafe = s->CheckEvenResult();
+				if (tempsafe == false) {
+					resultRoot.pop_back();
+					for (int k = 0; k < 5; k++) {
+						allCN.pop_back();
+						allLN.pop_back();
+						allHN.pop_back();
+					}
+					break;
 				}
-				break;
 			}
+			
 			incounter++;
 			if (incounter < rootNumber)
 				tempsafe = false;

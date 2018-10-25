@@ -11,7 +11,7 @@ public:
 	void OutputLockKey();
 	void OutputLockSafe(char *name);
 	void OutputLockFalse();
-	void runLock(int rootNumber);
+	void runLock(int rootNumber, bool mutilsafeIN);
 	bool reSafe();
 	bool first = false;
 	vector<int> allroot;
@@ -25,7 +25,7 @@ private:
 	vector<int> allHN;
 	int Runroot;
 	int temp, incounter = 0, temsize, rootsize;
-	bool tempsafe;
+	bool tempsafe, mutilsafe;
 	int *CNKey, *LNKey, *HNKey;
 	int CNKeyMuSafe[5];
 };

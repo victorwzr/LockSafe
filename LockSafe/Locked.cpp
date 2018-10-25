@@ -42,8 +42,9 @@ void Locked::SplitString(const string& s, vector<string>& v, const string& c)   
 }
 
 
-void Locked::setLock()
+void Locked::setLock(int sets)
 {
+	Insets = sets;
 	ifstream infile;
 	infile.open("locked-safe.txt");                //file stream
 	while (getline(infile, line)) {
@@ -107,7 +108,7 @@ void Locked::setLock()
 			}
 		}
 	}
-	for (int i = 0; i < 100; i++) {                                //split digit and pass to 100 locks data type in vector
+	for (int i = 0; i < Insets; i++) {                                //split digit and pass to 100 locks data type in vector
 		lock.push_back(Locks());
 		lock[i].index[0] = Root[i] / 1000;
 		lock[i].index[1] = Root[i] / 100 - lock[i].index[0] * 10;
@@ -174,7 +175,7 @@ int Locked::rePHF()
 
 void Locked::setHN()
 {
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < Insets; i++) {
 		hfun->HashHN(lock[i].A, PHF);
 		HN0.push_back(hfun->getHN());
 		//cout << hfun->getHN() << endl;
@@ -219,7 +220,7 @@ void Locked::runCN(bool bounsCon)
 
 	for (int i = 0; i < 10000; i++) {
 
-		for (int j = 0; j < 100; j++) {
+		for (int j = 0; j < Insets; j++) {
 			hash[0] = lock[j].index[0];
 			hash[1] = lock[j].index[1];
 			hash[2] = lock[j].index[2];
@@ -270,7 +271,7 @@ void Locked::runCN(bool bounsCon)
 			safeCN = sf->reCNSafe();
 			if (safeCN == false)
 				break;
-			if (j == 99) {
+			if (j == (Insets - 1)) {
 				validUHF.push_back(UHF[i]);
 			}
 		}
@@ -285,7 +286,7 @@ void Locked::runCN(bool bounsCon)
 			if (RCHK == true)
 				break;
 			vUHF = validUHF.at(m);
-			for (int k = 0; k < 100; k++) {
+			for (int k = 0; k < Insets; k++) {
 				totalsum = 0;
 				sumboumns = 0;
 				passsum = 0;
@@ -345,7 +346,7 @@ void Locked::runCN(bool bounsCon)
 					break;
 				}
 				else {
-					if (k == 99) {
+					if (k == (Insets - 1)) {
 						RCHK = true;
 						vVUHF[0] = vUHF[0];
 						vVUHF[1] = vUHF[1];

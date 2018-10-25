@@ -17,7 +17,7 @@ class Locked
 public:
 	Locked();
 	~Locked();
-	void setLock();
+	void setLock(int sets);
 	void setPHF();
 	void SplitString(const string& s, vector<string>& v, const string& c);
 	int rePHF();
@@ -59,7 +59,7 @@ private:
 	int LHF[4];
 	int hash[4];
 	int *vUHF;
-	int temp, sumboumns, passsum, totalsum, finalUHFv, finalPHFv, finalLHFv, reTsize, tempHash, temsize;
+	int temp, sumboumns, passsum, totalsum, finalUHFv, finalPHFv, finalLHFv, reTsize, tempHash, temsize, Insets;
 	int *HN0temp, *HN1temp, *HN2temp, *HN3temp, *HN4temp, *safetemp;
 	bool safeCN, mutilSafe, hashsafe;
 	bool RCHK;
