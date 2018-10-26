@@ -1,3 +1,5 @@
+//Zhaoran Wang 150382450 Breaked lock main part for break, bouns include here together
+
 #include "stdafx.h"
 #include "sstream"
 #include "Locked.h"
@@ -25,7 +27,7 @@ Locked::~Locked()
 {
 }
 
-void Locked::SplitString(const string& s, vector<string>& v, const string& c)              //split function
+void Locked::SplitString(const string& s, vector<string>& v, const string& c)              //split function, ref
 {
 	string::size_type pos1, pos2;
 	pos2 = s.find(c);
@@ -58,8 +60,8 @@ void Locked::setLock(int sets)
 
 		}
 		else {
-			culine.erase(std::remove(culine.begin(), culine.end(), ' '), culine.end());
-			SplitString(culine, vec, ":");
+			culine.erase(std::remove(culine.begin(), culine.end(), ' '), culine.end());              //delete all " " in the line
+			SplitString(culine, vec, ":");                                              //check by "£º" to split string get variables, suitable for most input files format
 			if (vec[0] == "ROOT") {
 				s << vec[1];
 				s >> temp;
@@ -108,7 +110,7 @@ void Locked::setLock(int sets)
 			}
 		}
 	}
-	for (int i = 0; i < Insets; i++) {                                //split digit and pass to 100 locks data type in vector
+	for (int i = 0; i < Insets; i++) {                                //split digit and pass to any number locks data type in vector
 		lock.push_back(Locks());
 		lock[i].index[0] = Root[i] / 1000;
 		lock[i].index[1] = Root[i] / 100 - lock[i].index[0] * 10;
@@ -145,12 +147,12 @@ void Locked::setLock(int sets)
 
 void Locked::setPHF()
 {
-	PHF[0] = lock[0].B[0] - lock[0].A[0] - lock[0].A[0] + lock[0].index[0];           //PHF digit set
+	PHF[0] = lock[0].B[0] - lock[0].A[0] - lock[0].A[0] + lock[0].index[0];           //PHF digit setted
 	PHF[1] = lock[0].B[1] - lock[0].A[1] - lock[0].A[1] + lock[0].index[1];
 	PHF[2] = lock[0].B[2] - lock[0].A[2] - lock[0].A[2] + lock[0].index[2];
 	PHF[3] = lock[0].B[3] - lock[0].A[3] - lock[0].A[3] + lock[0].index[3];
 
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {                   //turn digit to valid, check twice because PHF get by two times opreator
 		if (PHF[i] >= 10) {
 			PHF[i] = (PHF[i] - 10);
 		}
@@ -163,11 +165,10 @@ void Locked::setPHF()
 		}
 		if (PHF[i] < 0)
 			PHF[i] = PHF[i] + 10;
-		//cout << PHF[i] << endl;
 	}
 }
 
-int Locked::rePHF()
+int Locked::rePHF()                       //return PHF in number
 {
 	finalPHFv = PHF[0] * 1000 + PHF[1] * 100 + PHF[2] * 10 + PHF[3];
 	return finalPHFv;
@@ -175,10 +176,9 @@ int Locked::rePHF()
 
 void Locked::setHN()
 {
-	for (int i = 0; i < Insets; i++) {
+	for (int i = 0; i < Insets; i++) {                         //hash HN by LN and PHF
 		hfun->HashHN(lock[i].A, PHF);
 		HN0.push_back(hfun->getHN());
-		//cout << hfun->getHN() << endl;
 		hfun->HashHN(lock[i].B, PHF);
 		HN1.push_back(hfun->getHN());
 		hfun->HashHN(lock[i].C, PHF);
@@ -203,30 +203,29 @@ void Locked::runCN(bool bounsCon)
 		if (ULHF[i] < 0)
 			ULHF[i] = ULHF[i] + 10;
 	}
-	for (int i = 0; i < 4; i++) {                       //fix the total to positive
+	for (int i = 0; i < 4; i++) {                       //fix the total to positive, same check twice
 		if (ULHF[i] >= 10) {
 			ULHF[i] = (ULHF[i] - 10);
 		}
 		if (ULHF[i] < 0)
 			ULHF[i] = ULHF[i] + 10;
-		//	cout << ULHF[i] << endl;
 	}
-	for (int i = 0; i < 10000; i++) {                                  //inital UHF for 0-9999
+	for (int i = 0; i < 10000; i++) {                                  //inital UHF for 0-9999 and split to digit
 		UHF[i][0] = i / 1000;
 		UHF[i][1] = i / 100 - UHF[i][0] * 10;
 		UHF[i][2] = i / 10 - UHF[i][0] * 100 - UHF[i][1] * 10;
 		UHF[i][3] = i - UHF[i][0] * 1000 - UHF[i][1] * 100 - UHF[i][2] * 10;
 	}
 
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 10000; i++) {                          //go through all UHF
 
-		for (int j = 0; j < Insets; j++) {
+		for (int j = 0; j < Insets; j++) {               //go through all sets of mutlilocks any length
 			hash[0] = lock[j].index[0];
 			hash[1] = lock[j].index[1];
 			hash[2] = lock[j].index[2];
 			hash[3] = lock[j].index[3];
-			hfun->HashCN(hash, UHF[i]);         //
-			safetemp = hfun->getCN();
+			hfun->HashCN(hash, UHF[i]);         //Hash HN by possiable UHF get CN
+			safetemp = hfun->getCN();           //Check CN if is valid
 			sf->chkCN(safetemp);
 			safeCN = sf->reCNSafe();
 			if (safeCN == false)
@@ -235,8 +234,8 @@ void Locked::runCN(bool bounsCon)
 			hash[1] = HN0[j][1];
 			hash[2] = HN0[j][2];
 			hash[3] = HN0[j][3];
-			hfun->HashCN(hash, UHF[i]);         //
-			safetemp = hfun->getCN();
+			hfun->HashCN(hash, UHF[i]);         //Hash HN by possiable UHF get CN
+			safetemp = hfun->getCN();           //Check CN if is valid
 			sf->chkCN(safetemp);
 			safeCN = sf->reCNSafe();
 			if (safeCN == false)
@@ -245,8 +244,8 @@ void Locked::runCN(bool bounsCon)
 			hash[1] = HN1[j][1];
 			hash[2] = HN1[j][2];
 			hash[3] = HN1[j][3];
-			hfun->HashCN(hash, UHF[i]);         //
-			safetemp = hfun->getCN();
+			hfun->HashCN(hash, UHF[i]);         //Hash HN by possiable UHF get CN
+			safetemp = hfun->getCN();           //Check CN if is valid
 			sf->chkCN(safetemp);
 			safeCN = sf->reCNSafe();
 			if (safeCN == false)
@@ -255,8 +254,8 @@ void Locked::runCN(bool bounsCon)
 			hash[1] = HN2[j][1];
 			hash[2] = HN2[j][2];
 			hash[3] = HN2[j][3];
-			hfun->HashCN(hash, UHF[i]);         //
-			safetemp = hfun->getCN();
+			hfun->HashCN(hash, UHF[i]);         //Hash HN by possiable UHF get CN
+			safetemp = hfun->getCN();           //Check CN if is valid
 			sf->chkCN(safetemp);
 			safeCN = sf->reCNSafe();
 			if (safeCN == false)
@@ -265,13 +264,13 @@ void Locked::runCN(bool bounsCon)
 			hash[1] = HN3[j][1];
 			hash[2] = HN3[j][2];
 			hash[3] = HN3[j][3];
-			hfun->HashCN(hash, UHF[i]);         //
-			safetemp = hfun->getCN();
+			hfun->HashCN(hash, UHF[i]);        //Hash HN by possiable UHF get CN
+			safetemp = hfun->getCN();          //Check CN if is valid
 			sf->chkCN(safetemp);
 			safeCN = sf->reCNSafe();
-			if (safeCN == false)
+			if (safeCN == false)              
 				break;
-			if (j == (Insets - 1)) {
+			if (j == (Insets - 1)) {                          //Check All CN in one set of locks valid and output result into vector
 				validUHF.push_back(UHF[i]);
 			}
 		}
@@ -279,9 +278,9 @@ void Locked::runCN(bool bounsCon)
 
 
 
-	if (bounsCon == true) {
-
-		for (unsigned int m = 0; m < validUHF.size(); m++)
+	if (bounsCon == true) {                                        //For bouns condition
+		vUHFsize = validUHF.size();
+		for (auto m = 0; m < vUHFsize; m++)                        //Go through all valid CN after first part repeat check
 		{
 			if (RCHK == true)
 				break;
@@ -295,7 +294,7 @@ void Locked::runCN(bool bounsCon)
 				hash[2] = lock[k].index[2];
 				hash[3] = lock[k].index[3];
 				hfun->HashCN(hash, vUHF);
-				sumboumns = hfun->getCNsum();
+				sumboumns = hfun->getCNsum();                      //Get sum of all digits on all locks in one set and sum of one lock
 				totalsum = totalsum + sumboumns;
 				passsum = sumboumns;
 				hash[0] = HN0[k][0];
@@ -305,30 +304,29 @@ void Locked::runCN(bool bounsCon)
 				hfun->HashCN(hash, vUHF);
 				sumboumns = hfun->getCNsum();
 				totalsum = totalsum + sumboumns;
-				if (sumboumns <= passsum) {
+				if (sumboumns <= passsum) {                                    //Check if current lock bigger than last one
 					break;
 				}
-				//cout << vUHF[0] << vUHF[1] << vUHF[2] << vUHF[3] << endl;
 				passsum = sumboumns;
-				hash[0] = HN1[k][0];
+				hash[0] = HN1[k][0];                                  //Get sum of all digits on all locks in one set and sum of one lock
 				hash[1] = HN1[k][1];
 				hash[2] = HN1[k][2];
 				hash[3] = HN1[k][3];
 				hfun->HashCN(hash, vUHF);
 				sumboumns = hfun->getCNsum();
 				totalsum = totalsum + sumboumns;
-				if (sumboumns <= passsum) {
+				if (sumboumns <= passsum) {                          //Check if current lock bigger than last one
 					break;
 				}
 				passsum = sumboumns;
-				hash[0] = HN2[k][0];
+				hash[0] = HN2[k][0];                                 //Get sum of all digits on all locks in one set and sum of one lock
 				hash[1] = HN2[k][1];
 				hash[2] = HN2[k][2];
 				hash[3] = HN2[k][3];
 				hfun->HashCN(hash, vUHF);
 				sumboumns = hfun->getCNsum();
 				totalsum = totalsum + sumboumns;
-				if (sumboumns <= passsum) {
+				if (sumboumns <= passsum) {                                //Check if current lock bigger than last one
 					break;
 				}
 				passsum = sumboumns;
@@ -338,16 +336,16 @@ void Locked::runCN(bool bounsCon)
 				hash[3] = HN3[k][3];
 				hfun->HashCN(hash, vUHF);
 				sumboumns = hfun->getCNsum();
-				totalsum = totalsum + sumboumns;
-				if (sumboumns <= passsum) {
+				totalsum = totalsum + sumboumns;                              //Get sum of all digits on all locks in one set and sum of one lock
+				if (sumboumns <= passsum) {                                   //Check if current lock bigger than last one
 					break;
 				}
-				if (totalsum % 2 == 1) {
+				if (totalsum % 2 == 1) {                               //Check if even on final sum of one sets locks
 					break;
 				}
 				else {
-					if (k == (Insets - 1)) {
-						RCHK = true;
+					if (k == (Insets - 1)) {                        //output valid UHF
+						RCHK = true;                            
 						vVUHF[0] = vUHF[0];
 						vVUHF[1] = vUHF[1];
 						vVUHF[2] = vUHF[2];
@@ -365,35 +363,35 @@ void Locked::runCN(bool bounsCon)
 
 void Locked::setLHF()
 {
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {                                             //get LHF after UHF and PHF
 		LHF[i] = ULHF[i] - vVUHF[i];
-		if (LHF[i] < 0) {
+		if (LHF[i] < 0) {                                                    //Check valid digits
 			LHF[i] = LHF[i] + 10;
 		}
 		if (LHF[i] >= 10) {
 			LHF[i] = LHF[i] - 10;
 		}
 	}
-	finalLHFv = LHF[0] * 1000 + LHF[1] * 100 + LHF[2] * 10 + LHF[3];
+	finalLHFv = LHF[0] * 1000 + LHF[1] * 100 + LHF[2] * 10 + LHF[3];            //output number
 }
 
 int Locked::reLHF()
 {
-	return finalLHFv;
+	return finalLHFv;                      //return LHF number
 }
 
 int Locked::reUHF()
 {
 
-	finalUHFv = (vVUHF[0] * 1000) + (vVUHF[1] * 100) + (vVUHF[2] * 10) + (vVUHF[3]);
+	finalUHFv = (vVUHF[0] * 1000) + (vVUHF[1] * 100) + (vVUHF[2] * 10) + (vVUHF[3]);                   //return UHF in number
 	return finalUHFv;
 }
 
-void Locked::reBuiltLock()
+void Locked::reBuiltLock()                                                            //rebuilt lock after break locks wihtout old key and mutlisafe
 {
 	reTsize = Root.size();
 	//cout << reTsize << endl;
-	hreB->CNkey[0] = vVUHF[0];
+	hreB->CNkey[0] = vVUHF[0];                                                     //set all three hash key
 	hreB->CNkey[1] = vVUHF[1];
 	hreB->CNkey[2] = vVUHF[2];
 	hreB->CNkey[3] = vVUHF[3];
@@ -405,37 +403,37 @@ void Locked::reBuiltLock()
 	hreB->HNkey[1] = PHF[1];
 	hreB->HNkey[2] = PHF[2];
 	hreB->HNkey[3] = PHF[3];
-	for (unsigned int i = 0; i < Root.size(); i++) {
-		for (int j = 0; j < 5; j++) {
+	for (auto i = 0; i < reTsize; i++) {                      //for any length of mutlilocks
+		for (int j = 0; j < 5; j++) {                       //5 locks in one set
 			if (j == 0) {
 				hreB->temRoot = Root.at(i);
 			}
 			else {
-				hreB->setHashRoot(1);
+				hreB->setHashRoot(1);                  //Hash root or HN
 			}
 			hreB->setHashing(1);
 			tempHash = hreB->getHshing();
 			OutCN.push_back(tempHash);
-			//cout << "CN" << tempHash << endl;
-			sb->CheckCN(tempHash);
+
+			sb->CheckCN(tempHash);                     //Check safe again
 			hashsafe = sb->CheckCNResult();
 			if (hashsafe == false) {
 				mutilSafe = false;
 			}
-			hreB->setHashRoot(2);
+			hreB->setHashRoot(2);                       //Hash CN
 			hreB->setHashing(2);
 			tempHash = hreB->getHshing();
 			OutLN.push_back(tempHash);
-			//cout << "LN" << tempHash << endl;
+
 			hreB->setHashRoot(3);
-			hreB->setHashing(3);
+			hreB->setHashing(3);                      //Hash LN
 			tempHash = hreB->getHshing();
 			OutHN.push_back(tempHash);
-			//cout << "HN" << tempHash << endl;
+
 			if (i == 4) {
 				temsize = OutCN.size();
 				CNKeyMuSafe[4] = OutCN.at(temsize - 1);
-				CNKeyMuSafe[3] = OutCN.at(temsize - 2);
+				CNKeyMuSafe[3] = OutCN.at(temsize - 2);                  //Check bouns safe again
 				CNKeyMuSafe[2] = OutCN.at(temsize - 3);
 				CNKeyMuSafe[1] = OutCN.at(temsize - 4);
 				CNKeyMuSafe[0] = OutCN.at(temsize - 5);
@@ -448,10 +446,10 @@ void Locked::reBuiltLock()
 		}
 	}
 
-	breaked.open("mutilsafeNEW.txt");
+	breaked.open("mutilsafeNEW.txt");                   //output into new files
 	breaked.unsetf(ios::showpos);
 	if (mutilSafe = true) {
-		safe = "VALID";
+		safe = "VALID";                       //Valid check output
 	}
 	else {
 		safe = "NOT VALID";
@@ -461,7 +459,7 @@ void Locked::reBuiltLock()
 		breaked << "NS " << i + 1 << " " << safe << endl;
 		for (int j = 0; j < 5; j++) {
 
-			breaked << "CN" << j << " " << OutCN.front() << ", ";
+			breaked << "CN" << j << " " << OutCN.front() << ", ";                         //mutlisafe file NEW
 			OutCN.erase(OutCN.begin());
 			breaked << "LN" << j << " " << OutLN.front() << ", ";
 			OutLN.erase(OutLN.begin());
@@ -473,7 +471,7 @@ void Locked::reBuiltLock()
 	breaked.close();
 
 	breaked.open("keyNEW.txt");
-	breaked << "*** HashFunction will be same whether + ot - with origin file, eg +7 is same as -3***" << endl;
+	breaked << "*** HashFunction will be same whether + ot - with origin file, eg +7 is same as -3***" << endl;                  //Key file NEW and comment
 	breaked << "NS " << reTsize << endl;
 	for (auto iter = Root.cbegin(); iter != Root.cend(); iter++) {
 		breaked.unsetf(ios::showpos);

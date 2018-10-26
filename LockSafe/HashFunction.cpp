@@ -19,13 +19,13 @@ HashFunction::~HashFunction()
 
 void HashFunction::setHashing(int caseNum)                    //hashing by one same hashing method
 {
-	rootA = temRoot / 1000;
+	rootA = temRoot / 1000;                    //change to digit
 	rootB = (temRoot - rootA * 1000) / 100;
 	rootC = (temRoot - rootA * 1000 - rootB * 100) / 10;
 	rootD = temRoot - rootA * 1000 - rootB * 100 - rootC * 10;
 	switch (caseNum) {                              //hashing by different hash function
 	case 1:               //CN
-		rootA = rootA + CNkey[0];
+		rootA = rootA + CNkey[0];                  //change on the digit
 		if (rootA < 0)
 			rootA = rootA + 10;
 		if (rootA >= 10)
@@ -45,11 +45,11 @@ void HashFunction::setHashing(int caseNum)                    //hashing by one s
 			rootD = rootD + 10;
 		if (rootD >= 10)
 			rootD = rootD - 10;
-		CN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
+		CN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;               //change back to value
 		reNum = CN;
 		break;
 	case 2:                           //LN
-		rootA = rootA + LNkey[0];
+		rootA = rootA + LNkey[0];                               //change on the digit
 		if (rootA < 0)
 			rootA = rootA + 10;
 		if (rootA >= 10)
@@ -69,11 +69,11 @@ void HashFunction::setHashing(int caseNum)                    //hashing by one s
 			rootD = rootD + 10;
 		if (rootD >= 10)
 			rootD = rootD - 10;
-		LN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
+		LN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;             //change back to value
 		reNum = LN;
 		break;
 	case 3:                  //HN
-		rootA = rootA + HNkey[0];
+		rootA = rootA + HNkey[0];                      //change on the digit
 		if (rootA < 0)
 			rootA = rootA + 10;
 		if (rootA >= 10)
@@ -93,7 +93,7 @@ void HashFunction::setHashing(int caseNum)                    //hashing by one s
 			rootD = rootD + 10;
 		if (rootD >= 10)
 			rootD = rootD - 10;
-		HN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
+		HN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;                 //change back to value
 		reNum = HN;
 		break;
 	}

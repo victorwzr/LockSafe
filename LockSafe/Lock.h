@@ -1,3 +1,6 @@
+//Header files for Lock.cpp
+//Zhaoran Wang 150382450
+
 #include <vector>
 #pragma once
 
@@ -23,7 +26,6 @@ private:
 	vector<int> allLN;
 	vector<int> allLNBackup;
 	vector<int> allHN;
-	int Runroot;
 	int temp, incounter = 0, temsize, rootsize;
 	bool tempsafe, mutilsafe;
 	int *CNKey, *LNKey, *HNKey;
