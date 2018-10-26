@@ -1,3 +1,5 @@
+//Header files for random.cpp
+//Zhaoran Wang 150382450
 #pragma once
 #include <vector>
 

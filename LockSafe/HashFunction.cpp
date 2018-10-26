@@ -1,8 +1,10 @@
+//Zhaoran Wang 150382450 main hash function
 #include "stdafx.h"
 #include "HashFunction.h"
 #include "random.h"
 #include "windows.h"
 #include <iostream>
+
 
 random *r = new random();
 
@@ -15,16 +17,15 @@ HashFunction::~HashFunction()
 {
 }
 
-void HashFunction::setHashing(int caseNum)
+void HashFunction::setHashing(int caseNum)                    //hashing by one same hashing method
 {
-	//cout << temRoot << endl;
-	rootA = temRoot / 1000;
+	rootA = temRoot / 1000;                    //change to digit
 	rootB = (temRoot - rootA * 1000) / 100;
 	rootC = (temRoot - rootA * 1000 - rootB * 100) / 10;
 	rootD = temRoot - rootA * 1000 - rootB * 100 - rootC * 10;
-	switch (caseNum) {
-	case 1:
-		rootA = rootA + CNkey[0];
+	switch (caseNum) {                              //hashing by different hash function
+	case 1:               //CN
+		rootA = rootA + CNkey[0];                  //change on the digit
 		if (rootA < 0)
 			rootA = rootA + 10;
 		if (rootA >= 10)
@@ -44,12 +45,11 @@ void HashFunction::setHashing(int caseNum)
 			rootD = rootD + 10;
 		if (rootD >= 10)
 			rootD = rootD - 10;
-		CN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
-		//cout << CN << endl;
+		CN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;               //change back to value
 		reNum = CN;
 		break;
-	case 2:
-		rootA = rootA + LNkey[0];
+	case 2:                           //LN
+		rootA = rootA + LNkey[0];                               //change on the digit
 		if (rootA < 0)
 			rootA = rootA + 10;
 		if (rootA >= 10)
@@ -69,12 +69,11 @@ void HashFunction::setHashing(int caseNum)
 			rootD = rootD + 10;
 		if (rootD >= 10)
 			rootD = rootD - 10;
-		LN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
-		//cout << LN << endl;
+		LN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;             //change back to value
 		reNum = LN;
 		break;
-	case 3:
-		rootA = rootA + HNkey[0];
+	case 3:                  //HN
+		rootA = rootA + HNkey[0];                      //change on the digit
 		if (rootA < 0)
 			rootA = rootA + 10;
 		if (rootA >= 10)
@@ -94,14 +93,13 @@ void HashFunction::setHashing(int caseNum)
 			rootD = rootD + 10;
 		if (rootD >= 10)
 			rootD = rootD - 10;
-		HN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;
-		//cout << HN << endl;
+		HN = rootA * 1000 + rootB * 100 + rootC * 10 + rootD;                 //change back to value
 		reNum = HN;
 		break;
 	}
 }
 
-void HashFunction::setHashRoot(int caseChar)
+void HashFunction::setHashRoot(int caseChar)                 //set current hash value
 {
 	switch (caseChar) {
 	case 1:
@@ -118,19 +116,19 @@ void HashFunction::setHashRoot(int caseChar)
 
 
 
-void HashFunction::setBaseRoot(vector<int>&allrootB)
+void HashFunction::setBaseRoot(vector<int>&allrootB)                    //set base root for first key files
 {
 	r->chooseRoot(allrootB);
 	temRoot = r->getRoot();
 
 }
 
-int HashFunction::getHshing()
+int HashFunction::getHshing()                       //ggetter
 {
 	return reNum;
 }
 
-void HashFunction::setKey()
+void HashFunction::setKey()                 //set random hash key(hashing function)
 {
 	r->setHashKey();
 	CNkeyP = r->getHashKey();

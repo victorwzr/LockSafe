@@ -1,3 +1,5 @@
+//Header files for Safe.cpp
+//Zhaoran Wang 150382450
 #pragma once
 class Safe
 {
@@ -9,7 +11,6 @@ public:
 	bool CheckEvenResult();
 	void CheckEven(int LN[5]);
 	bool CheckSumResult();
-	//void CheckSum(int LN[5]);
 private:
 	bool safe;
 	int d1, d2, d3, d4, sum;

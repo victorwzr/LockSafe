@@ -1,9 +1,11 @@
+//Header files for Locked.cpp
+//Zhaoran Wang 150382450
 #pragma once
 #include <vector>
 
 using namespace std;
 
-struct Locks {
+struct Locks {                          //Lock data type
 	int index[4];//Root
 	int A[4];    //LN0
 	int B[4];    //LN1
@@ -17,7 +19,7 @@ class Locked
 public:
 	Locked();
 	~Locked();
-	void setLock();
+	void setLock(int sets);
 	void setPHF();
 	void SplitString(const string& s, vector<string>& v, const string& c);
 	int rePHF();
@@ -59,7 +61,7 @@ private:
 	int LHF[4];
 	int hash[4];
 	int *vUHF;
-	int temp, sumboumns, passsum, totalsum, finalUHFv, finalPHFv, finalLHFv, reTsize, tempHash, temsize;
+	int temp, sumboumns, passsum, totalsum, finalUHFv, finalPHFv, finalLHFv, reTsize, tempHash, temsize, Insets, vUHFsize;
 	int *HN0temp, *HN1temp, *HN2temp, *HN3temp, *HN4temp, *safetemp;
 	bool safeCN, mutilSafe, hashsafe;
 	bool RCHK;

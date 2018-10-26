@@ -1,3 +1,5 @@
+//Header files for HashFunction.cpp
+//Zhaoran Wang 150382450
 #pragma once
 #include <vector>
 using namespace std;

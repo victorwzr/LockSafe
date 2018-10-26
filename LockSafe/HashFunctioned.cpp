@@ -1,3 +1,5 @@
+//Zhaoran Wang 150382450         Break lock Hashing only for Hash HN and LN
+
 #include "stdafx.h"
 #include "HashFunctioned.h"
 #include<iostream>
@@ -13,7 +15,7 @@ HashFunctioned::~HashFunctioned()
 {
 }
 
-void HashFunctioned::HashCN(int CN[], int CNkey[])
+void HashFunctioned::HashCN(int CN[], int CNkey[])                     //Hash CN
 {
 
 	CN[0] = CN[0] + CNkey[0];
@@ -41,25 +43,25 @@ void HashFunctioned::HashCN(int CN[], int CNkey[])
 	if (CN[3] >= 10)
 		CN[3] = CN[3] - 10;
 	TCN = CN;
-	sum = CN[0] + CN[1] + CN[2] + CN[3];
+	sum = CN[0] + CN[1] + CN[2] + CN[3];               //return CN in number and sum of CN digits
 }
 
-int * HashFunctioned::getCN()
+int * HashFunctioned::getCN()              //return CN
 {
 	return TCN;
 }
 
-int HashFunctioned::getCNsum()
+int HashFunctioned::getCNsum()           //return CN sum
 {
 	return sum;
 }
 
-int* HashFunctioned::getHN()
+int* HashFunctioned::getHN()            //return HN
 {
 	return THN;
 }
 
-void HashFunctioned::HashHN(int HN[], int HNkey[])
+void HashFunctioned::HashHN(int HN[], int HNkey[])                     //return HN after hash LN by PHF
 {
 	HN[0] = HN[0] + HNkey[0];
 	if (HN[0] < 0)

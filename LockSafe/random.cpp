@@ -1,9 +1,8 @@
+//Zhaoran Wang 150382450  random set the hash key and random choose root for first time run and to set key file
+
 #include "stdafx.h"
 #include "random.h"
-#include "time.h"
-#include <algorithm>
 #include <vector>
-#include <iostream>
 
 using namespace std;
 
@@ -16,27 +15,27 @@ random::~random()
 {
 }
 
-int random::getRoot()
+int random::getRoot()                //return root
 {
 	return root;
 }
 
 
 
-void random::chooseRoot(vector<int>&allrootC)
+void random::chooseRoot(vector<int>&allrootC)                 //random choose root from all possible root and delete picked one from pool
 {
 	rootNumber = allrootC.at(0);
 	allrootC.erase(allrootC.begin());
 	root = rootNumber;
 }
 
-int* random::getHashKey()
+int* random::getHashKey()          //return key
 {
 
 	return key;
 }
 
-void random::setHashKey()
+void random::setHashKey()                       //random set all 4 digits with the random sign symbol
 {
 	for (int i = 0; i < 4; i++) {
 		ran = rand() % 10;
