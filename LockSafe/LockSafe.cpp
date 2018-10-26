@@ -8,8 +8,10 @@
 #include "Lock.h"
 #include "Locked.h"
 #include "windows.h"
+#include <exception>
 #include <iostream>
 #include "reGenerate.h"
+
 
 Locked *led = new Locked();
 reGenerate *reG = new reGenerate();
@@ -21,11 +23,25 @@ LARGE_INTEGER nFreq;
 LARGE_INTEGER nBeginTime;                       //timer
 LARGE_INTEGER nEndTime;
 
-bool cusafe;
+bool cusafe, tryT;
 bool runProgram = true;
 bool mutilsafe = false;
 int rootNumber, backUHF, backPHF, backLHF, choose, sets;                 //mian variables
-char second;
+char trychar2, second, trychar = 'Y';
+
+struct MyException : public exception {               //sample exception
+	const char * what() const throw () {
+		return "C++ Exception";
+	}
+};
+
+template <class t, class u>
+int compare( t a,  u b) {                      //template here
+	if (a==b) return true;
+	if (a=!b) return false;
+
+	return 0;
+}
 
 int main()
 {
@@ -35,7 +51,7 @@ int main()
 	while (runProgram == true) {                                   //menu
 		cout << "Enter the number to choose" << endl;
 		cout << "1. Run inital for CourseWork 1, get key mutli safe and lock safe" << endl;
-		cout << "2. Break lock" << endl;
+		cout << "2. Break lock(need restart program after 3 or 4 option run)" << endl;
 		cout << "3. Re Gen Mutil safe by key" << endl;
 		cout << "4. Re Gen Key and Mutil safe by Break Lock" << endl;
 		cin >> choose;
@@ -95,11 +111,16 @@ int main()
 				cout << "running time" << timeWin << endl;
 			}
 			else {
-				if (second == 'N') {
+				try {
+					if (second == 'N') {
 
+					}
+					else {
+						cout << "Error input" << endl;
+					}
 				}
-				else {
-					cout << "Error input" << endl;
+				catch (MyException  e) {                                                   //sample try ecxeption here
+					cout << e.what() << endl;
 				}
 			}
 			break;
@@ -147,13 +168,14 @@ int main()
 
 		cout << "Program finsish" << endl;
 		cout << "Run again? (Y/N)" << endl;
-		cin >> second;
-		if (second == 'Y') {
+		cin >> trychar2;                                               
+		tryT = compare<char,char>(trychar2, trychar);                          //template here
+		if (tryT == true) {
 			runProgram = true;
 		}
 		else {
-			if (second == 'N') {
-
+			if (tryT == false) {
+				runProgram = false;
 			}
 			else {
 				cout << "Error input" << endl;
